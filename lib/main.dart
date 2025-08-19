@@ -181,8 +181,10 @@ class _SudokuDemoState extends State<SudokuDemo> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AspectRatio(
-          aspectRatio: 1,
+        // Cambiado: Reducir el tamaño del grid de Sudoku
+        SizedBox(
+          width: 270, // Tamaño reducido
+          height: 270, // Tamaño reducido
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 9),
@@ -202,8 +204,9 @@ class _SudokuDemoState extends State<SudokuDemo> {
                   color: isGiven ? Colors.indigo.withOpacity(0.08) : null,
                 ),
                 child: Center(
+                  // Cambiado: Reducir el tamaño de fuente
                   child: Text(v == 0 ? '' : '$v',
-                      style: TextStyle(fontSize: 16, fontWeight: isGiven ? FontWeight.bold : FontWeight.normal)),
+                      style: TextStyle(fontSize: 12, fontWeight: isGiven ? FontWeight.bold : FontWeight.normal)),
                 ),
               );
             },
