@@ -34,13 +34,6 @@ class HomePage extends StatelessWidget {
           ),
           SizedBox(height: 16),
           AlgorithmCard(
-            title: 'Mochila 0/1 ingenua',
-            description:
-                'Explora recursivamente todas las combinaciones de tomar/no tomar cada ítem (fuerza bruta). Devuelve el valor máximo sin exceder la capacidad.',
-            child: KnapsackDemo(),
-          ),
-          SizedBox(height: 16),
-          AlgorithmCard(
             title: 'Coin Change por enumeración',
             description:
                 'Enumera combinaciones de monedas que suman un monto objetivo. Muestra cuántas combinaciones existen y una solución con el menor número de monedas (si hay).',
@@ -181,10 +174,10 @@ class _SudokuDemoState extends State<SudokuDemo> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Cambiado: Reducir el tamaño del grid de Sudoku
+        
         SizedBox(
-          width: 270, // Tamaño reducido
-          height: 270, // Tamaño reducido
+          width: 270,
+          height: 270,
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 9),
@@ -224,101 +217,6 @@ class _SudokuDemoState extends State<SudokuDemo> {
   }
 }
 
-// ======================== MOCHILA 0/1 INGENUA ========================
-class KnapsackDemo extends StatefulWidget {
-  const KnapsackDemo({super.key});
-  @override
-  State<KnapsackDemo> createState() => _KnapsackDemoState();
-}
-
-class _KnapsackDemoState extends State<KnapsackDemo> {
-  int n = 5;
-  int capacity = 15;
-  late List<int> weights;
-  late List<int> values;
-  String result = '';
-  int explored = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _randomize();
-  }
-
-  void _randomize() {
-    final rng = Random();
-    weights = List<int>.generate(n, (_) => 1 + rng.nextInt(10));
-    values = List<int>.generate(n, (_) => 1 + rng.nextInt(20));
-    result = '';
-    explored = 0;
-    setState(() {});
-  }
-
-  int _knap(int i, int cap) {
-    explored++;
-    if (i == n || cap == 0) return 0;
-    final without = _knap(i + 1, cap);
-    if (weights[i] > cap) return without;
-    final withIt = values[i] + _knap(i + 1, cap - weights[i]);
-    return max(without, withIt);
-  }
-
-  void _solve() {
-    explored = 0;
-    final sw = Stopwatch()..start();
-    final best = _knap(0, capacity);
-    sw.stop();
-    setState(() {
-      result = 'Valor máx: $best · nodos explorados: $explored · ${sw.elapsedMilliseconds} ms';
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(children: [
-        const Text('Ítems:'),
-        Expanded(
-          child: Slider(
-            value: n.toDouble(), min: 3, max: 12, divisions: 9,
-            label: '$n',
-            onChanged: (v) => setState(() => n = v.round()),
-            onChangeEnd: (_) => _randomize(),
-          ),
-        ),
-        const SizedBox(width: 12),
-        const Text('Capacidad:'),
-        Expanded(
-          child: Slider(
-            value: capacity.toDouble(), min: 5, max: 40, divisions: 35,
-            label: '$capacity',
-            onChanged: (v) => setState(() => capacity = v.round()),
-          ),
-        ),
-        FilledButton(onPressed: _solve, child: const Text('Resolver')),
-        const SizedBox(width: 8),
-        OutlinedButton(onPressed: _randomize, child: const Text('Aleatorio')),
-      ]),
-      const SizedBox(height: 8),
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(columns: const [
-          DataColumn(label: Text('#')),
-          DataColumn(label: Text('Peso')),
-          DataColumn(label: Text('Valor')),
-        ], rows: [
-          for (int i = 0; i < n; i++) DataRow(cells: [
-            DataCell(Text('${i + 1}')),
-            DataCell(Text('${weights[i]}')),
-            DataCell(Text('${values[i]}')),
-          ])
-        ]),
-      ),
-      const SizedBox(height: 8),
-      Text(result, style: const TextStyle(fontWeight: FontWeight.w600)),
-    ]);
-  }
-}
 
 // ======================== COIN CHANGE (ENUMERACIÓN) ========================
 class CoinChangeDemo extends StatefulWidget {

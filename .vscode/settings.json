@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/juanc/OneDrive/Escritorio/estructura de datos/flutter/sudoku/linux"
+    "cmake.sourceDirectory": "C:/Users/juanc/OneDrive/Escritorio/estructura de datos/flutter/sudoku/linux",
+    "cmake.ignoreCMakeListsMissing": true
 }
